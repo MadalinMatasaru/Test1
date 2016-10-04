@@ -182,6 +182,20 @@ public class FTest extends UnitTestClassBase {
 			.label("Devices").build()).click();
          afterLoginWindow.describe(TreeView.class, new TreeViewDescription.Builder()
 			.attachedText("Devices").build()).select("Devices;Servers;All Managed Servers");
+         
+         Table servers = afterLoginWindow.describe(Table.class, new TableDescription.Builder()
+			.objectName("server-table").build()); 
+         for (TableRow serverrows:servers.getRows()){
+			 for (TableCell servercell:serverrows.getCells() ){
+				 System.out.println(servercell.getValue().toString());
+				 if (servercell.getValue().toString().equals("tv-355.ta.opsware.com")) {
+					 servercell.click();
+					 System.out.println("Found");
+				}
+				 else  System.out.println("Not Found");
+			 }
+		 }
+         
          afterLoginWindow.describe(Table.class, new TableDescription.Builder()
 			.objectName("server-table").build()).selectRows(0); 
         
