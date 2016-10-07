@@ -183,7 +183,7 @@ public class FTest extends UnitTestClassBase {
          afterLoginWindow.describe(TreeView.class, new TreeViewDescription.Builder()
 			.attachedText("Devices").build()).select("Devices;Servers;All Managed Servers");
          
-         Table servers = afterLoginWindow.describe(Table.class, new TableDescription.Builder()
+        /* Table servers = afterLoginWindow.describe(Table.class, new TableDescription.Builder()
 			.objectName("server-table").build()); 
          for (TableRow serverrows:servers.getRows()){
 			 for (TableCell servercell:serverrows.getCells() ){
@@ -221,7 +221,7 @@ public class FTest extends UnitTestClassBase {
 						.title("Server: tv-355.ta.opsware.com").build()).click();
 				 }
 				 }
-			 }
+			 }*/
          
          afterLoginWindow.describe(Table.class, new TableDescription.Builder()
 			.objectName("server-table").build()).selectRows(0); 
