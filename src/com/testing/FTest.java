@@ -59,7 +59,8 @@ public class FTest extends UnitTestClassBase {
 		
 		Runtime.getRuntime().exec("C:\\Program Files (x86)\\HPE SA\\launcher\\hpe_sa_launcher.exe");
 	}
-
+	
+	
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
 		globalTearDown();
@@ -288,45 +289,6 @@ public class FTest extends UnitTestClassBase {
 			.title(new RegExpProperty("Remediate.*")).build()).describe(UiObject.class, new UiObjectDescription.Builder()
 			.nativeClass("com.opsware.ngui.apppolicy.task.RemediatePoliciesTask$2").build());
          
-
-         //String bitmapFolder = ("@C:\\Users\\mapt\\Desktop\\Images\\Reference1.bmp");
-//        		 try {
-//					RenderedImage expectedImage = ImageIO.read(new File("C:\\Users\\mapt\\Desktop\\Images\\Reference1.PNG"));
-//					if (tabel.verifyImageMatch(expectedImage))
-//						System.out.println("BINGO!!!!");
-//							;
-//				} catch (IOException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//        		 
-        		
-//		 for (TableRow row:tabel.getRows()){
-//			 for (TableCell cell:row.getCells() ){
-        		
-//					System.out.println(tabel.findChildren(UiObject.class, tabel.getDescription()).toString());
-//					System.out.println(tabel.getAttachedText().toString());
-//					System.out.println(tabel.getDisplayName().toString());
-					//System.out.println(tabel.getVisibleText().toString());
-					String rezultat = tabel.getVisibleText().toString();
-					if (rezultat.contains("Succeeded")) System.out.println ("PROBLEM SOLVED!!!!");
-					try{
-						assertTrue(rezultat.contains("Succeeded"));
-					}
-					catch(AssertionError e){
-			             // Adds a step to the results report on failure. 
-						System.out.println("VREAU SA VAD CUM FUNCTIONEAZA!!!!");
-			            //throw e;
-			        }
-//				 if (cell.getValue().toString().equals("Test Policy")) {
-//					//cell.click();
-//					 System.out.println("Found");
-//				}
-//				 else  System.out.println("Not Found");
-//			 }
-//		 }
-         
-         
          Desktop.describe(Window.class, new com.hp.lft.sdk.java.WindowDescription.Builder()
 			.title(new RegExpProperty("Remediate.*")).build()).describe(Button.class, new com.hp.lft.sdk.java.ButtonDescription.Builder()
 			.label("Close").build()).click();
@@ -337,9 +299,56 @@ public class FTest extends UnitTestClassBase {
 		Window afterLoginWindow =  Desktop.describe(Window.class, new com.hp.lft.sdk.java.WindowDescription.Builder()
 		.title("HPE Server Automation - 192.168.178.30").build());
 		
+		Table servers = afterLoginWindow.describe(Table.class, new TableDescription.Builder()
+		.objectName("server-table").build()); 
+        for (TableRow serverrows:servers.getRows()){
+		 for (TableCell servercell:serverrows.getCells() ){
+			 System.out.println(servercell.getValue().toString());
+			 if (servercell.getValue().toString().equals("tv-355.ta.opsware.com")) {
+				 servercell.doubleClick();
+				 Desktop.describe(Window.class, new com.hp.lft.sdk.java.WindowDescription.Builder().title("Server: tv-355.ta.opsware.com").build())
+				 .describe(Button.class, new com.hp.lft.sdk.java.ButtonDescription.Builder().label("Management Policies").build()).click();
+				 Desktop.describe(Window.class, new com.hp.lft.sdk.java.WindowDescription.Builder()
+					.title("Server: tv-355.ta.opsware.com").build()).describe(TreeView.class, new TreeViewDescription.Builder()
+					.attachedText("Management Policies").build()).select("Management Policies;Software Policies");	
+			}
+			 else  System.out.println("Not Found");
+		 }
+	 }
+     
+     Table Policies = Desktop.describe(Window.class, new com.hp.lft.sdk.java.WindowDescription.Builder()
+		.title("Server: tv-355.ta.opsware.com").build()).describe(Table.class, new TableDescription.Builder()
+		.attachedText("Software Policies").build());
+     for (TableRow Policiesrows:Policies.getRows()){
+		 for (TableCell Policiescell:Policiesrows.getCells() ){
+			 if (Policiescell.getValue().toString().equals("Test Policy")) {
+				 Policiescell.click(MouseButton.RIGHT);
+				 
+				 Desktop.describe(Window.class, new com.hp.lft.sdk.java.WindowDescription.Builder()
+					.title("Server: tv-355.ta.opsware.com").build()).describe(Menu.class, new MenuDescription.Builder()
+					.label("Actions").build()).click();
+		         try {Thread.sleep(5000);} catch (InterruptedException e) {e.printStackTrace();}
+		         Desktop.describe(Window.class, new com.hp.lft.sdk.java.WindowDescription.Builder()
+					.title("Server: tv-355.ta.opsware.com").build()).describe(Menu.class, new MenuDescription.Builder()
+					.label("Actions").build()).selectSubMenu("Uninstall Software...");
+					
+		         
+		         Desktop.describe(Window.class, new com.hp.lft.sdk.java.WindowDescription.Builder()
+					.title("Uninstall Software").build()).describe(Button.class, new com.hp.lft.sdk.java.ButtonDescription.Builder()
+					.label("Start Job").build()).click();
+					try {Thread.sleep(20000);} catch (InterruptedException e) {e.printStackTrace();}
+					Desktop.describe(Window.class, new com.hp.lft.sdk.java.WindowDescription.Builder()
+					.title(new RegExpProperty("Uninstall Software.*")).build()).describe(Button.class, new com.hp.lft.sdk.java.ButtonDescription.Builder()
+					.label("Close").build()).click();
+			 }
+			 }
+		 }
+   
+        
 		afterLoginWindow.close();
 		afterLoginWindow.describe(Button.class, new com.hp.lft.sdk.java.ButtonDescription.Builder()
 		.label("Yes").build()).click();	
 	}
 }
+ 
  
