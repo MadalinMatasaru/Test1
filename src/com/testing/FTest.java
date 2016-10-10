@@ -167,7 +167,7 @@ public class FTest extends UnitTestClassBase {
 			.selectedNodes(new String[] { "#0;Application Configuration" }).build())
 			.select("#0;Package");
          
-         //enter 'test' in teh search field and select the test policy 
+         //enter 'test' in the search field and select the test policy 
          testPolicyWindow.describe(Editor.class, new com.hp.lft.sdk.java.EditorDescription.Builder()
 			.tagName("JTextField").nativeClass("javax.swing.JTextField").build()).setText("test");  
          testPolicyWindow.describe(Table.class, new TableDescription.Builder()
@@ -238,7 +238,7 @@ public class FTest extends UnitTestClassBase {
 		.objectName("server-table").build()); 
         for (TableRow serverrows:servers.getRows()){
 		 for (TableCell servercell:serverrows.getCells() ){
-			 System.out.println(servercell.getValue().toString());
+			 //System.out.println(servercell.getValue().toString());
 			 if (servercell.getValue().toString().equals("tv-355.ta.opsware.com")) {
 				 servercell.doubleClick();
 				 Desktop.describe(Window.class, new com.hp.lft.sdk.java.WindowDescription.Builder().title("Server: tv-355.ta.opsware.com").build())
